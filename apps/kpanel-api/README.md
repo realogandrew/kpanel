@@ -22,7 +22,8 @@ src/
 │   ├── health/       # Health check service (ping URLs)
 │   ├── content/      # Content entries per site
 │   ├── licensing/    # Plans, licenses, payment hooks
-│   └── admin/        # Platform admin (all tenants/sites)
+│   ├── admin/        # Platform admin (all tenants/sites)
+│   └── netlify/      # Netlify connection (list sites, deploy status)
 ├── shared/           # Middleware, utils
 │   └── middleware/   # auth, tenantScope, requirePlatformAdmin
 ├── app.js            # Express app and routes
@@ -60,6 +61,10 @@ src/
 | GET | `/api/v1/admin/tenants` | JWT + platform admin | List all tenants |
 | GET | `/api/v1/admin/sites` | JWT + platform admin | List all sites |
 | GET | `/api/v1/admin/stats` | JWT + platform admin | Platform-wide counts |
+| GET | `/api/v1/netlify/sites` | Yes | List sites from Netlify (requires NETLIFY_TOKEN) |
+| GET | `/api/v1/netlify/sites/:netlifySiteId/status` | Yes | Deploy status for a Netlify site |
+
+**Sites:** When creating a site, pass `netlifySiteId` to link it to Netlify. Use `GET /sites/:id?netlify=1` to include deploy status in the response.
 
 Auth: `Authorization: Bearer <JWT>` or `X-API-Key: kp_xxx` (or `Authorization: Bearer kp_xxx`).
 

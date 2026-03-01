@@ -85,6 +85,9 @@ export default function DashboardPage() {
             >
               <div>
                 <strong>{site.name}</strong>
+                {site.netlifySiteId && (
+                  <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", color: "var(--accent)" }}>Netlify</span>
+                )}
                 <span style={{ color: "var(--text-muted)", marginLeft: "0.5rem" }}>{site.domain}</span>
                 <div style={{ fontSize: "0.875rem", marginTop: "0.25rem" }}>
                   Status:{" "}
@@ -128,6 +131,8 @@ export default function DashboardPage() {
 
       <p style={{ marginTop: "1.5rem" }}>
         <Link href="/dashboard/sites/new">+ Add site</Link>
+        {" · "}
+        <Link href="/dashboard/sites/import-netlify">Import from Netlify</Link>
       </p>
     </div>
   );

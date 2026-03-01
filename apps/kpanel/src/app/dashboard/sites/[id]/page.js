@@ -15,7 +15,7 @@ export default function SiteDetailPage() {
   const [checking, setChecking] = useState(false);
 
   useEffect(() => {
-    api(`/api/v1/sites/${params.id}`)
+    api(`/api/v1/sites/${params.id}?netlify=1`)
       .then(setSite)
       .catch(() => router.push("/dashboard"))
       .finally(() => setLoading(false));
@@ -34,6 +34,10 @@ export default function SiteDetailPage() {
   }
 
   if (loading || !site) return <div>Loading…</div>;
+
+  const netlifyStatus = site.netlifyStatus;
+  const deployState = netlifyStatus?.latestDeploy?.state;
+  const deployStateColors = { ready: "var(--success)", building: "var(--warning)", error: "var(--error)" };
 
   const lastCheck = site.diagnostics?.lastCheck;
 
@@ -92,6 +96,41 @@ export default function SiteDetailPage() {
           </ul>
         )}
       </section>
+
+      {netlifyStatus && (
+        <section
+          style={{
+            padding: "1rem",
+            background: "var(--surface)",
+            borderRadius: "8px",
+            border: "1px solid var(--border)",
+            marginBottom: "1rem",
+          }}
+        >
+          <h2 style={{ margin: "0 0 0.75rem 0", fontSize: "1rem" }}>Netlify</h2>
+          <p style={{ margin: 0 }}>
+            Deploy:{" "}
+            <span style={{ color: deployStateColors[deployState] || "var(--text-muted)" }}>
+              {deployState ?? "—"}
+            </span>
+          </p>
+          {netlifyStatus.latestDeploy?.publishedAt && (
+            <p style={{ margin: "0.25rem 0 0 0", color: "var(--text-muted)", fontSize: "0.875rem" }}>
+              Last published: {new Date(netlifyStatus.latestDeploy.publishedAt).toLocaleString()}
+            </p>
+          )}
+          {netlifyStatus.url && (
+            <p style={{ margin: "0.25rem 0 0 0", fontSize: "0.875rem" }}>
+              <a href={netlifyStatus.url.startsWith("http") ? netlifyStatus.url : `https://${netlifyStatus.url}`} target="_blank" rel="noopener noreferrer">
+                Open site
+              </a>
+              {netlifyStatus.adminUrl && (
+                <> · <a href={netlifyStatus.adminUrl} target="_blank" rel="noopener noreferrer">Netlify admin</a></>
+              )}
+            </p>
+          )}
+        </section>
+      )}
 
       <p>
         <Link href={`/dashboard/content?siteId=${site._id}`}>View content for this site →</Link>

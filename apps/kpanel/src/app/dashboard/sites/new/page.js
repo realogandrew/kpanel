@@ -33,6 +33,9 @@ export default function NewSitePage() {
   return (
     <div>
       <h1 style={{ marginBottom: "1rem" }}>Add site</h1>
+      <p style={{ marginBottom: "1rem", fontSize: "0.875rem", color: "var(--text-muted)" }}>
+        <Link href="/dashboard/sites/import-netlify">Import from Netlify</Link> to add a site already deployed there.
+      </p>
       <form onSubmit={handleSubmit} style={{ maxWidth: "24rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
         <input
           type="text"

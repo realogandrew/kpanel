@@ -4,6 +4,7 @@
 import { Router } from 'express';
 import { Site } from './site.model.js';
 import { checkSite, checkTenantSites } from '../health/health.service.js';
+import { getNetlifyStatus } from './netlify.service.js';
 import { authenticate } from '../../shared/middleware/auth.js';
 
 const router = Router();
@@ -40,11 +41,15 @@ router.post('/check-all', async (req, res) => {
   }
 });
 
-/** GET /sites/:id - Get one site */
+/** GET /sites/:id - Get one site (optionally with ?netlify=1 for deploy status) */
 router.get('/:id', async (req, res) => {
   const site = await Site.findOne({ _id: req.params.id, tenantId: req.tenantId });
   if (!site) return res.status(404).json({ error: 'Site not found' });
-  res.json(site);
+  const out = site.toObject ? site.toObject() : { ...site };
+  if (site.netlifySiteId && req.query.netlify === '1') {
+    out.netlifyStatus = await getNetlifyStatus(site.netlifySiteId);
+  }
+  res.json(out);
 });
 
 /** PATCH /sites/:id */

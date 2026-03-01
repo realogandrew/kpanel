@@ -12,6 +12,7 @@ import siteRoutes from './modules/sites/site.routes.js';
 import contentRoutes from './modules/content/content.routes.js';
 import licenseRoutes from './modules/licensing/license.routes.js';
 import adminRoutes from './modules/admin/admin.routes.js';
+import netlifyRoutes from './modules/netlify/netlify.routes.js';
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/api/v1/sites', siteRoutes);
 app.use('/api/v1/content', contentRoutes);
 app.use('/api/v1/licenses', licenseRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/netlify', netlifyRoutes);
 
 // 404
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
