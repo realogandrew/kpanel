@@ -1,0 +1,26 @@
+{
+  "name": "kpanel-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KPanel - Multi-tenant website health monitoring and content management",
+  "scripts": {
+    "predev": "node scripts/ensure-mongo.js",
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "npm run dev --workspace=kpanel-api",
+    "dev:web": "npm run dev --workspace=kpanel",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "keywords": ["kpanel", "monitoring", "netlify", "multi-tenant", "cms"],
+  "author": "",
+  "license": "UNLICENSED",
+  "workspaces": ["apps/*"],
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "packageManager": "pnpm@9.14.2",
+  "engines": {
+    "node": ">=20"
+  }
+}

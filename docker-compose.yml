@@ -1,0 +1,13 @@
+# Optional: run MongoDB locally for development without installing it.
+# From repo root: docker compose up -d
+# Then the API will connect to mongodb://localhost:27017/kpanel (default MONGO_URI).
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - kpanel-mongo-data:/data/db
+
+volumes:
+  kpanel-mongo-data:
